@@ -34,10 +34,6 @@ function gerarMensagem() {
 
     // Se houver aniversariantes, calcular e exibir a mensagem
     if (aniversariantesMes.length > 0) {
-        const totalContribuicao = aniversariantesMes.length * 200;
-        const totalFuncionarios = aniversariantes.length;
-        const contribuicaoPorPessoa = (totalContribuicao / totalFuncionarios).toFixed(2);
-
         let mensagem = `🎉🎂 Olá, pessoal! Chegou o momento de celebrarmos os aniversariantes de ${nomeMes}! 🎉🎁🥳\n\n`;
         mensagem += "Este mês, temos o prazer de comemorar com os seguintes aniversariantes:\n\n";
         
@@ -45,13 +41,12 @@ function gerarMensagem() {
             mensagem += `🎈 ${item[0]} - ${item[1]}\n`;
         });
 
-        mensagem += `\nAgora, vamos fazer uma grande celebração! 💖💰 Cada um de nós deve contribuir com *R$ ${contribuicaoPorPessoa}* para garantir que todos recebam um presente incrível! 🎁\n\n`;
-        mensagem += "💳 *Dados para pagamento:*\n";
-        mensagem += "🔹 *Chave PIX:* `70138310424`\n\n";
+        mensagem += `\nAgora, vamos fazer uma grande celebração! 💖🎁\n\n`;
+        mensagem += "💳 *A chave PIX para contribuição está na descrição do grupo.*\n\n";
         mensagem += "📌 *Após realizar o pagamento, por favor, envie o comprovante através do seguinte link:*\n";
         mensagem += "👉 https://forms.gle/GfXgpVaNqT8ZE1US7\n\n";
         mensagem += "Agradecemos imensamente a colaboração de todos para tornar este mês ainda mais especial! 🙏 Vamos fazer deste momento uma lembrança inesquecível! 🎊🎉";
-
+        
         // Exibe a mensagem no HTML
         document.getElementById("mensagem").innerText = mensagem;
     }
@@ -59,9 +54,18 @@ function gerarMensagem() {
 
 // Função para copiar a mensagem para a área de transferência
 function copiarMensagem() {
+    const botao = document.getElementById("copiarBtn");
     const mensagem = document.getElementById("mensagem").innerText;
+
     navigator.clipboard.writeText(mensagem).then(() => {
-        alert("Mensagem copiada!");
+        botao.innerText = "Copiado!";
+        botao.style.backgroundColor = "#2ecc71"; // Verde para indicar sucesso
+
+        // Voltar ao estado original após 2 segundos
+        setTimeout(() => {
+            botao.innerText = "Copiar Mensagem";
+            botao.style.backgroundColor = "#3498db"; // Azul original
+        }, 2000);
     });
 }
 
