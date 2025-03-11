@@ -15,62 +15,60 @@ const aniversariantes = [
     ["Wellington do Nascimento", "15/05"], ["Ellifas Albuquerque", "21/08"]
 ];
 
-// Função para obter o mês atual
 function obterMesAtual() {
-    const dataAtual = new Date();
-    return dataAtual.getMonth(); // 0 = Janeiro, 11 = Dezembro
+    return new Date().getMonth(); // 0 = Janeiro, 11 = Dezembro
 }
 
-// Função para gerar a mensagem de aniversário
 function gerarMensagem() {
+    const hoje = new Date();
     const mesAtual = obterMesAtual();
-    const nomeMes = new Date().toLocaleString('pt-BR', { month: 'long' });
+    const nomeMes = hoje.toLocaleString('pt-BR', { month: 'long' });
+    const mesSeguinte = (mesAtual + 1) % 12;
+    const nomeMesSeguinte = new Date(hoje.getFullYear(), mesSeguinte).toLocaleString('pt-BR', { month: 'long' });
     
     // Filtrar aniversariantes do mês atual
-    const aniversariantesMes = aniversariantes.filter(aniversariante => {
-        const mesAniversario = parseInt(aniversariante[1].split('/')[1]) - 1;
-        return mesAniversario === mesAtual;
+    const aniversariantesMes = aniversariantes.filter(([_, data]) => {
+        return parseInt(data.split('/')[1]) - 1 === mesAtual;
     });
-
-    // Se houver aniversariantes, calcular e exibir a mensagem
-    if (aniversariantesMes.length > 0) {
-        let mensagem = `🎉🎂 Olá, pessoal! Chegou o momento de celebrarmos os aniversariantes de ${nomeMes}! 🎉🎁🥳\n\n`;
-        mensagem += "Este mês, temos o prazer de comemorar com os seguintes aniversariantes:\n\n";
+    
+    // Filtrar aniversariantes do mês seguinte
+    const aniversariantesArrecadacao = aniversariantes.filter(([_, data]) => {
+        return parseInt(data.split('/')[1]) - 1 === mesSeguinte;
+    });
+    
+    let mensagem = `🎉🎂 Olá, pessoal! Chegou o momento de celebrarmos os aniversariantes de ${nomeMes}! 🎉🎁🥳\n\n`;
+    mensagem += "Este mês, temos o prazer de comemorar com os seguintes aniversariantes:\n\n";
+    aniversariantesMes.forEach(([nome, data]) => {
+        mensagem += `🎈 ${nome} - ${data}\n`;
+    });
+    
+    if (aniversariantesArrecadacao.length > 0) {
+        const totalContribuicao = aniversariantesArrecadacao.length * 200;
+        const totalFuncionarios = aniversariantes.length;
+        const contribuicaoPorPessoa = (totalContribuicao / totalFuncionarios).toFixed(2);
         
-        aniversariantesMes.forEach(item => {
-            mensagem += `🎈 ${item[0]} - ${item[1]}\n`;
+        mensagem += `\nAgora, estamos arrecadando para os aniversariantes de ${nomeMesSeguinte}! 💖💰\n`;
+        aniversariantesArrecadacao.forEach(([nome, data]) => {
+            mensagem += `🎁 ${nome} - ${data}\n`;
         });
-
-        mensagem += `\nAgora, vamos fazer uma grande celebração! 💖🎁\n\n`;
-        mensagem += "💳 *A chave PIX para contribuição está na descrição do grupo.*\n\n";
+        
+        mensagem += `\nCada um de nós deve contribuir com *R$ ${contribuicaoPorPessoa}* para garantir que todos recebam um presente incrível! 🎁\n\n`;
+        mensagem += "💳 *Dados para pagamento:*\n";
+        mensagem += "🔹 *Chave PIX:* `70138310424`\n\n";
         mensagem += "📌 *Após realizar o pagamento, por favor, envie o comprovante através do seguinte link:*\n";
         mensagem += "👉 https://forms.gle/GfXgpVaNqT8ZE1US7\n\n";
         mensagem += "Agradecemos imensamente a colaboração de todos para tornar este mês ainda mais especial! 🙏 Vamos fazer deste momento uma lembrança inesquecível! 🎊🎉";
-        
-        // Exibe a mensagem no HTML
-        document.getElementById("mensagem").innerText = mensagem;
     }
+    
+    document.getElementById("mensagem").innerText = mensagem;
 }
 
-// Função para copiar a mensagem para a área de transferência
 function copiarMensagem() {
-    const botao = document.getElementById("copiarBtn");
     const mensagem = document.getElementById("mensagem").innerText;
-
     navigator.clipboard.writeText(mensagem).then(() => {
-        botao.innerText = "Copiado!";
-        botao.style.backgroundColor = "#2ecc71"; // Verde para indicar sucesso
-
-        // Voltar ao estado original após 2 segundos
-        setTimeout(() => {
-            botao.innerText = "Copiar Mensagem";
-            botao.style.backgroundColor = "#3498db"; // Azul original
-        }, 2000);
+        alert("Mensagem copiada!");
     });
 }
 
-// Gerar a mensagem ao carregar a página
 window.onload = gerarMensagem;
-
-// Adicionar evento ao botão de copiar
 document.getElementById("copiarBtn").addEventListener("click", copiarMensagem);
