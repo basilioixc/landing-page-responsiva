@@ -54,7 +54,7 @@ function gerarMensagem() {
         
         mensagem += `\nCada um de nós deve contribuir com *R$ ${contribuicaoPorPessoa}* para garantir que todos recebam um presente incrível! 🎁\n\n`;
         mensagem += "💳 *Dados para pagamento:*\n";
-        mensagem += "🔹 *Chave PIX:* `basilioixc.github.io/pix/`\n\n";
+        mensagem += "👉 https://basilioixc.github.io/pix/\n\n";
         mensagem += "📌 *Após realizar o pagamento, por favor, envie o comprovante através do seguinte link:*\n";
         mensagem += "👉 https://forms.gle/GfXgpVaNqT8ZE1US7\n\n";
         mensagem += "Agradecemos imensamente a colaboração de todos para tornar este mês ainda mais especial! 🙏 Vamos fazer deste momento uma lembrança inesquecível! 🎊🎉";
